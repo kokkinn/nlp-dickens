@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 750px;
+                 height: 750px;
+                 background-color: ;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#6da33e", "font": {"color": "#000"}, "id": "of", "label": "of", "shape": "dot", "title": "of"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "the", "label": "the", "shape": "dot", "title": "the"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "he", "label": "he", "shape": "dot", "title": "he"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "had", "label": "had", "shape": "dot", "title": "had"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "in", "label": "in", "shape": "dot", "title": "in"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "to", "label": "to", "shape": "dot", "title": "to"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "and", "label": "and", "shape": "dot", "title": "and"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "I", "label": "I", "shape": "dot", "title": "I"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "be", "label": "be", "shape": "dot", "title": "be"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "that", "label": "that", "shape": "dot", "title": "that"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "saw", "label": "saw", "shape": "dot", "title": "saw"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "was", "label": "was", "shape": "dot", "title": "was"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "a", "label": "a", "shape": "dot", "title": "a"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "it", "label": "it", "shape": "dot", "title": "it"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "red", "label": "red", "shape": "dot", "title": "red"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "light", "label": "light", "shape": "dot", "title": "light"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "have", "label": "have", "shape": "dot", "title": "have"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "him", "label": "him", "shape": "dot", "title": "him"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "at", "label": "at", "shape": "dot", "title": "at"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "his", "label": "his", "shape": "dot", "title": "his"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "on", "label": "on", "shape": "dot", "title": "on"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "said", "label": "said", "shape": "dot", "title": "said"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "with", "label": "with", "shape": "dot", "title": "with"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "It", "label": "It", "shape": "dot", "title": "It"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "He", "label": "He", "shape": "dot", "title": "He"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "me", "label": "me", "shape": "dot", "title": "me"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "as", "label": "as", "shape": "dot", "title": "as"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "been", "label": "been", "shape": "dot", "title": "been"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "am", "label": "am", "shape": "dot", "title": "am"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "for", "label": "for", "shape": "dot", "title": "for"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "Look", "label": "Look", "shape": "dot", "title": "Look"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "out", "label": "out", "shape": "dot", "title": "out"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "Below", "label": "Below", "shape": "dot", "title": "Below"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "there", "label": "there", "shape": "dot", "title": "there"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "which", "label": "which", "shape": "dot", "title": "which"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "when", "label": "when", "shape": "dot", "title": "when"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "towards", "label": "towards", "shape": "dot", "title": "towards"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "make", "label": "make", "shape": "dot", "title": "make"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "tunnel", "label": "tunnel", "shape": "dot", "title": "tunnel"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "door", "label": "door", "shape": "dot", "title": "door"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "looked", "label": "looked", "shape": "dot", "title": "looked"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "down", "label": "down", "shape": "dot", "title": "down"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "could", "label": "could", "shape": "dot", "title": "could"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "eyes", "label": "eyes", "shape": "dot", "title": "eyes"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "my", "label": "my", "shape": "dot", "title": "my"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "time", "label": "time", "shape": "dot", "title": "time"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "if", "label": "if", "shape": "dot", "title": "if"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "own", "label": "own", "shape": "dot", "title": "own"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "do", "label": "do", "shape": "dot", "title": "do"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "by", "label": "by", "shape": "dot", "title": "by"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "not", "label": "not", "shape": "dot", "title": "not"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "hand", "label": "hand", "shape": "dot", "title": "hand"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "There", "label": "There", "shape": "dot", "title": "There"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "seemed", "label": "seemed", "shape": "dot", "title": "seemed"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "found", "label": "found", "shape": "dot", "title": "found"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "went", "label": "went", "shape": "dot", "title": "went"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "one", "label": "one", "shape": "dot", "title": "one"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "should", "label": "should", "shape": "dot", "title": "should"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "but", "label": "but", "shape": "dot", "title": "but"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "near", "label": "near", "shape": "dot", "title": "near"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "this", "label": "this", "shape": "dot", "title": "this"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "bell", "label": "bell", "shape": "dot", "title": "bell"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "would", "label": "would", "shape": "dot", "title": "would"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "mouth", "label": "mouth", "shape": "dot", "title": "mouth"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "What", "label": "What", "shape": "dot", "title": "What"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "is", "label": "is", "shape": "dot", "title": "is"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "sir", "label": "sir", "shape": "dot", "title": "sir"}, {"color": "#6da33e", "font": {"color": "#000"}, "id": "were", "label": "were", "shape": "dot", "title": "were"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "of", "to": "the", "value": 64.0}, {"arrows": "to", "from": "he", "to": "had", "value": 38.0}, {"arrows": "to", "from": "in", "to": "the", "value": 34.0}, {"arrows": "to", "from": "to", "to": "the", "value": 32.0}, {"arrows": "to", "from": "and", "to": "I", "value": 28.0}, {"arrows": "to", "from": "to", "to": "be", "value": 28.0}, {"arrows": "to", "from": "I", "to": "had", "value": 26.0}, {"arrows": "to", "from": "that", "to": "he", "value": 24.0}, {"arrows": "to", "from": "I", "to": "saw", "value": 24.0}, {"arrows": "to", "from": "that", "to": "I", "value": 22.0}, {"arrows": "to", "from": "was", "to": "a", "value": 22.0}, {"arrows": "to", "from": "it", "to": "was", "value": 20.0}, {"arrows": "to", "from": "red", "to": "light", "value": 20.0}, {"arrows": "to", "from": "and", "to": "the", "value": 20.0}, {"arrows": "to", "from": "I", "to": "have", "value": 20.0}, {"arrows": "to", "from": "to", "to": "him", "value": 18.0}, {"arrows": "to", "from": "at", "to": "the", "value": 18.0}, {"arrows": "to", "from": "of", "to": "his", "value": 18.0}, {"arrows": "to", "from": "on", "to": "the", "value": 18.0}, {"arrows": "to", "from": "I", "to": "said", "value": 18.0}, {"arrows": "to", "from": "with", "to": "a", "value": 16.0}, {"arrows": "to", "from": "in", "to": "his", "value": 16.0}, {"arrows": "to", "from": "It", "to": "was", "value": 16.0}, {"arrows": "to", "from": "He", "to": "had", "value": 16.0}, {"arrows": "to", "from": "he", "to": "was", "value": 14.0}, {"arrows": "to", "from": "me", "to": "and", "value": 14.0}, {"arrows": "to", "from": "as", "to": "I", "value": 14.0}, {"arrows": "to", "from": "in", "to": "a", "value": 14.0}, {"arrows": "to", "from": "to", "to": "me", "value": 14.0}, {"arrows": "to", "from": "I", "to": "was", "value": 14.0}, {"arrows": "to", "from": "had", "to": "been", "value": 14.0}, {"arrows": "to", "from": "I", "to": "am", "value": 14.0}, {"arrows": "to", "from": "for", "to": "the", "value": 14.0}, {"arrows": "to", "from": "Look", "to": "out", "value": 14.0}, {"arrows": "to", "from": "Below", "to": "there", "value": 12.0}, {"arrows": "to", "from": "which", "to": "I", "value": 12.0}, {"arrows": "to", "from": "which", "to": "he", "value": 12.0}, {"arrows": "to", "from": "with", "to": "his", "value": 12.0}, {"arrows": "to", "from": "and", "to": "that", "value": 12.0}, {"arrows": "to", "from": "when", "to": "I", "value": 12.0}, {"arrows": "to", "from": "towards", "to": "the", "value": 12.0}, {"arrows": "to", "from": "had", "to": "to", "value": 12.0}, {"arrows": "to", "from": "to", "to": "make", "value": 12.0}, {"arrows": "to", "from": "and", "to": "had", "value": 12.0}, {"arrows": "to", "from": "he", "to": "said", "value": 12.0}, {"arrows": "to", "from": "the", "to": "tunnel", "value": 12.0}, {"arrows": "to", "from": "said", "to": "I", "value": 12.0}, {"arrows": "to", "from": "the", "to": "door", "value": 11.0}, {"arrows": "to", "from": "looked", "to": "down", "value": 10.0}, {"arrows": "to", "from": "I", "to": "could", "value": 10.0}, {"arrows": "to", "from": "saw", "to": "him", "value": 10.0}, {"arrows": "to", "from": "his", "to": "eyes", "value": 10.0}, {"arrows": "to", "from": "I", "to": "looked", "value": 10.0}, {"arrows": "to", "from": "to", "to": "my", "value": 10.0}, {"arrows": "to", "from": "and", "to": "saw", "value": 10.0}, {"arrows": "to", "from": "time", "to": "to", "value": 10.0}, {"arrows": "to", "from": "saw", "to": "that", "value": 10.0}, {"arrows": "to", "from": "as", "to": "if", "value": 10.0}, {"arrows": "to", "from": "light", "to": "and", "value": 10.0}, {"arrows": "to", "from": "of", "to": "me", "value": 10.0}, {"arrows": "to", "from": "my", "to": "own", "value": 10.0}, {"arrows": "to", "from": "to", "to": "do", "value": 10.0}, {"arrows": "to", "from": "and", "to": "he", "value": 10.0}, {"arrows": "to", "from": "to", "to": "his", "value": 10.0}, {"arrows": "to", "from": "by", "to": "the", "value": 10.0}, {"arrows": "to", "from": "door", "to": "and", "value": 10.0}, {"arrows": "to", "from": "of", "to": "a", "value": 10.0}, {"arrows": "to", "from": "saw", "to": "the", "value": 10.0}, {"arrows": "to", "from": "was", "to": "the", "value": 10.0}, {"arrows": "to", "from": "was", "to": "not", "value": 10.0}, {"arrows": "to", "from": "his", "to": "hand", "value": 8.0}, {"arrows": "to", "from": "There", "to": "was", "value": 8.0}, {"arrows": "to", "from": "my", "to": "eyes", "value": 8.0}, {"arrows": "to", "from": "with", "to": "my", "value": 8.0}, {"arrows": "to", "from": "me", "to": "to", "value": 8.0}, {"arrows": "to", "from": "it", "to": "had", "value": 8.0}, {"arrows": "to", "from": "seemed", "to": "to", "value": 8.0}, {"arrows": "to", "from": "I", "to": "found", "value": 8.0}, {"arrows": "to", "from": "I", "to": "went", "value": 8.0}, {"arrows": "to", "from": "one", "to": "of", "value": 8.0}, {"arrows": "to", "from": "there", "to": "was", "value": 8.0}, {"arrows": "to", "from": "if", "to": "I", "value": 8.0}, {"arrows": "to", "from": "and", "to": "it", "value": 8.0}, {"arrows": "to", "from": "I", "to": "should", "value": 8.0}, {"arrows": "to", "from": "but", "to": "I", "value": 8.0}, {"arrows": "to", "from": "the", "to": "red", "value": 8.0}, {"arrows": "to", "from": "near", "to": "the", "value": 8.0}, {"arrows": "to", "from": "it", "to": "and", "value": 8.0}, {"arrows": "to", "from": "that", "to": "this", "value": 8.0}, {"arrows": "to", "from": "and", "to": "to", "value": 8.0}, {"arrows": "to", "from": "in", "to": "that", "value": 8.0}, {"arrows": "to", "from": "bell", "to": "and", "value": 8.0}, {"arrows": "to", "from": "for", "to": "it", "value": 8.0}, {"arrows": "to", "from": "he", "to": "would", "value": 8.0}, {"arrows": "to", "from": "mouth", "to": "of", "value": 8.0}, {"arrows": "to", "from": "What", "to": "is", "value": 8.0}, {"arrows": "to", "from": "It", "to": "is", "value": 8.0}, {"arrows": "to", "from": "sir", "to": "he", "value": 8.0}, {"arrows": "to", "from": "to", "to": "that", "value": 8.0}, {"arrows": "to", "from": "were", "to": "the", "value": 8.0}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -80000,
+            "springConstant": 0.001,
+            "springLength": 250
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
