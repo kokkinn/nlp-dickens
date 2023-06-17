@@ -44,34 +44,38 @@ class TextGenerator:
                 transitions[(words[i], words[i + 1])] += coef
         return transitions
 
-    def generate_sentence(self, words_number: int, entry_word: str = None) -> str:
+    def generate_sentence(self) -> str:
         def get_next_word(curr_word):
             next_word_choices = [(transition[1], weight) for transition, weight in self.transitions_data.items() if
                                  transition[0] == curr_word]
             if len(next_word_choices) == 0:
-                return random.choice(list(set([tup[0] for tup in self.transitions_data])))
+                return False
+                # return random.choice(list(set([tup[0] for tup in self.transitions_data])))
             words, weights_ = zip(*next_word_choices)
             return random.choices(population=words, weights=weights_)[0]
 
         sentence: list = []
 
-        if entry_word is None:
-            entry_word = random.choice(list(set([tup[0] for tup in self.transitions_data])))
+        entry_word = random.choice(
+            list(set([transition[0] for transition in self.transitions_data if
+                      transition[0][0].isupper()])))
 
-        for _ in range(words_number):
+        while True:
             sentence.append(entry_word)
+            if entry_word[len(entry_word) - 1] in '.!?':
+                break
             entry_word = get_next_word(entry_word)
+            if not entry_word:
+                break
+            # if entry_word[0].isupper():
+            #     entry_word= entry_word.lower()
 
-        sentence[0] = sentence[0].capitalize()
-        return " ".join(sentence) + (random.choices(('.', '?', '!'), (5, 2, 1)))[0]
+        return " ".join(sentence)
 
     def generate_text(self, number_sentences) -> str:
         res = []
         for _ in range(number_sentences):
-            res.append(self.generate_sentence(random.randint(4, 20),
-                                              random.choice(
-                                                  ['i', "my", 'a', 'the', 'so', 'after', 'then', 'however', 'when',
-                                                   'he', 'she'])))
+            res.append(self.generate_sentence())
         res = " ".join(res)
         with open("../results/data/generated_text.txt", 'w') as file:
             file.write(res)

@@ -7,7 +7,7 @@ def get_random_color():
 
 
 def clean_text(text):
-    return re.sub(r'-', ' ', re.sub(r'[",]', '', text)).lower()
+    return re.sub(r'-', ' ', re.sub(r'[",]', '', text))
 
 
 def split_text_by_sentence(text):
@@ -15,7 +15,7 @@ def split_text_by_sentence(text):
 
 
 def split_sentence_by_words(sentence):
-    return re.findall(r'\b\S+\b', sentence)
+    return re.findall(r'\b\S+\b\.*', sentence)
 
 
 def sort_data(data_):
