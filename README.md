@@ -44,22 +44,30 @@ From directory of ```requirements.txt``` file (root of project), install depende
 pip install -r requirements.txt
 ```
 
-### Run the app
+### How to use ?
 
-Execute the ```main.py``` file
+Execute the ```main.py``` file.
 
 ```shell
 python3 -m src.main
 ```
 
-All the results will be stored into ```results/``` directory
+After providing some numerical data, that affects "amount" of the output following
+data would be received:
+
+- Bar chart
+- Interactive graph (HTML)
+- Transitions data
+- Generated text
+
+That data would be stored into `./results` directory (created automatically while running script).
 
 ### Visualisation examples
 
-![example1](readme_data/graph_example_1.png)
-![example2](readme_data/graph_preview_2.png)
-![example2](readme_data/graph_example_3.png)
-![example2](readme_data/bar_chart_example_1.png)
+![example1](report/images/graph_example_1.png)
+![example2](report/images/graph_preview_2.png)
+![example2](report/images/graph_example_3.png)
+![example2](report/images/bar_chart_example_1.png)
 
 ### Text generation example
 

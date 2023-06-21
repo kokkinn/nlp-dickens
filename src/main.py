@@ -4,11 +4,11 @@ from src.text_generator import TextGenerator
 def main():
     url: str = "https://www.online-literature.com/dickens/2941/"
     while True:
-        nodes_number_bc = input('How many nodes [1 - 20] would you like to display in a bar chart ?\n')
+        nodes_number_bc = input('How many nodes [1 - 100] would you like to display in a bar chart ?\n')
         if not nodes_number_bc.isdigit():
             continue
         nodes_number_bc = int(nodes_number_bc)
-        if 1 <= nodes_number_bc <= 20:
+        if 1 <= nodes_number_bc <= 100:
             break
 
     while True:

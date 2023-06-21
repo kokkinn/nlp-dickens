@@ -20,7 +20,7 @@ class TextGenerator:
 
     @classmethod
     def __get_text_from_url(cls, url_: str) -> str:
-        text = ''
+        extracted_text: str = ''
         html_doc: str = requests.get(url_).text
         soup = BeautifulSoup(html_doc, 'html.parser')
         for p in soup.find("h1", string="The Signal-Man").find_parent('div').find_all('p'):
@@ -28,8 +28,8 @@ class TextGenerator:
                 br.replace_with(" ")
             if "breadcrumb" in p.__str__():
                 break
-            text += p.text
-        return text
+            extracted_text += p.text
+        return extracted_text
 
     @classmethod
     def __calculate_transitions(cls, text: str):
@@ -37,26 +37,28 @@ class TextGenerator:
         for sentence in split_text_by_sentence(text):
             words: list = split_sentence_by_words(sentence)
             for i in range(len(words) - 1):
-                # TODO solve the calculation way
-                # for j in range(i + 1, len(words) - 1):
-                #     transitions[(words[i], words[j])] += 1 / (j - i)
-                coef = 0.5 if words[i] in ['the', 'a', 'is', 'are'] else 1
-                transitions[(words[i], words[i + 1])] += coef
+                transitions[(words[i], words[i + 1])] += 1
         return transitions
 
+    # coef = 0.5 if words[i] in ['the', 'a', 'is', 'are'] else 1
+    # TODO solve the calculation way
+    # for j in range(i + 1, len(›words) - 1):
+    #     transitions[(words[i], words[j])] += 1 / (j - i)
+
     def generate_sentence(self) -> str:
-        def get_next_word(curr_word):
+        def get_next_word(curr_word: str):
             next_word_choices = [(transition[1], weight) for transition, weight in self.transitions_data.items() if
                                  transition[0] == curr_word]
             if len(next_word_choices) == 0:
                 return False
-                # return random.choice(list(set([tup[0] for tup in self.transitions_data])))
             words, weights_ = zip(*next_word_choices)
-            return random.choices(population=words, weights=weights_)[0]
+            choice: str = random.choices(population=words, weights=weights_)[0]
+            self.transitions_data[(curr_word, choice)] -= 1
+            return choice
 
         sentence: list = []
 
-        entry_word = random.choice(
+        entry_word: str = random.choice(
             list(set([transition[0] for transition in self.transitions_data if
                       transition[0][0].isupper()])))
 
@@ -67,8 +69,6 @@ class TextGenerator:
             entry_word = get_next_word(entry_word)
             if not entry_word:
                 break
-            # if entry_word[0].isupper():
-            #     entry_word= entry_word.lower()
 
         return " ".join(sentence)
 
@@ -83,18 +83,19 @@ class TextGenerator:
 
     def write_data_to_file(self) -> None:
         with open('../results/data/transitions.csv', 'w') as file:
-            file.write('Word 1, Word 2, Frequency\n')
+            file.write('Index,Word_1,Word_2,Frequency\n')
+            ind: int = 1
             for k, v in self.transitions_data.items():
-                file.write(f'{k[0]}, {k[1]}, {v}\n')
+                file.write(f'{ind},{k[0]},{k[1]},{v}\n')
+                ind += 1
 
     def get_bar_chart_image(self, bar_number: int) -> None:
-        if bar_number > 20:
-            raise Exception('More than 20 will look ugly')
+        plt.figure(figsize=[15, 15])
         data_to_vis = slice_dictionary(self.transitions_data, 0, bar_number)
         objects = [f'{w1} {w2}' for w1, w2 in data_to_vis]
         values = data_to_vis.values()
         plt.bar(objects, values, color='green')
-        plt.xticks(rotation=45)
+        plt.xticks(rotation=90)
         plt.xlabel('Transitions')
         plt.ylabel('Frequency')
         plt.title(f'Top {len(data_to_vis)} transitions')

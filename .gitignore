@@ -3,3 +3,5 @@ venv
 lib
 __pycache__
 results
+src/.ipynb_checkpoints
+src/transitions_analysis.ipynb
